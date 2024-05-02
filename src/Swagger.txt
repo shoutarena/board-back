@@ -1,0 +1,28 @@
+    1. API 그룹화할 태그명 지정(Controller 에 기입)
+    @Tag(name = "Response Estimate", description = "Response Estimate API")
+
+    2. 각 API에 대한 설명을 추가(각 API 별 기입)
+    @Operation(summary = "업체 회원가입", description = "업체 측에서 회원가입 할 때 사용하는 API")
+
+    4. 파라미터에 대한 정보를 나타낼 수 있다.(각 API 별 기입)
+    @Parameters({
+            @Parameter(name = "email", description = "이메일", example = "chrome123@naver.com"),
+            @Parameter(name = "password", description = "6자~12자 이내", example = "abcd1234"),
+            @Parameter(name = "companyName", description = "업체명", example = "코리아 시스템"),
+            @Parameter(name = "companyNumber", description = "업체 번호", example = "112233"),
+            @Parameter(name = "companyAddress", description = "업체 주소", example = "인천시 미추홀구 용현동")
+    })
+
+    5. 이미지(MultiPart File)를 입력 데이터로 받아야 할 경우, @PostMapping(또는 @PatchMapping) 어노테이션 안에 consumes, produces 속성을 추가해주어야 한다.
+    @PatchMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+
+    4. 응답 코드에 대한 정보를 나타낼 수도 있다.(각 API 별 기입)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "1000", description = "요청에 성공하였습니다.", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "2002", description = "이미 가입된 계정입니다.", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "4000", description = "데이터베이스 연결에 실패하였습니다.", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "4011", description = "비밀번호 암호화에 실패하였습니다.", content = @Content(mediaType = "application/json"))
+    })
+
+    5. 성공 코드만 나타내고 싶다면, @ApiResponse 어노테이션만 사용하면 된다.
+    @ApiResponse(responseCode = "1000", description = "요청에 성공하였습니다.", content = @Content(mediaType = "application/json"))
