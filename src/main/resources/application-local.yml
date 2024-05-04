@@ -24,7 +24,8 @@ spring:
     livereload:
       enabled: true
     restart:
-      enabled: false
+      enabled: true
+      additional-exclude: static/**,public/**
 
 logging:
   level:

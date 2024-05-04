@@ -11,7 +11,6 @@ import lombok.Setter;
 public class SignUpRequestDto {
 
     @NotBlank
-    @Email
     private String email;
     @NotBlank
     @Size(min = 8, max = 20)

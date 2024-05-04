@@ -10,25 +10,20 @@ import org.springframework.http.ResponseEntity;
 
 @Getter
 public class SignUpResponseDto extends ResponseDto {
-    private SignUpResponseDto(String Code, String message) {
+    private SignUpResponseDto() {
         super(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessage());
     }
 
-    public static ResponseEntity<SignUpRequestDto> success() {
-        SignUpRequestDto result = new SignUpRequestDto();
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
-
     public static ResponseEntity<ResponseDto> duplicateEmail() {
-        return ResponseDto.getResponseEntityWithResponseCode(ResponseCode.DUPLICATE_EMAIL);
+        return ResponseDto.getResponseEntityByResponseCode(ResponseCode.DUPLICATE_EMAIL);
     }
 
     public static ResponseEntity<ResponseDto> duplicateNickname() {
-        return ResponseDto.getResponseEntityWithResponseCode(ResponseCode.DUPLICATE_NICKNAME);
+        return ResponseDto.getResponseEntityByResponseCode(ResponseCode.DUPLICATE_NICKNAME);
     }
 
     public static ResponseEntity<ResponseDto> duplicateTelNumber() {
-        return ResponseDto.getResponseEntityWithResponseCode(ResponseCode.DUPLICATE_TEL_NUMBER);
+        return ResponseDto.getResponseEntityByResponseCode(ResponseCode.DUPLICATE_TEL_NUMBER);
     }
 
 }

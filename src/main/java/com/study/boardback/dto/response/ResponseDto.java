@@ -17,7 +17,12 @@ public class ResponseDto {
         return ResponseEntity.status(ResponseCode.DATABASE_ERROR.getHttpStatus()).body(responseBody);
     }
 
-    public static ResponseEntity<ResponseDto> getResponseEntityWithResponseCode(ResponseCode responseCode){
+    public static ResponseEntity<ResponseDto> success(){
+        ResponseDto responseBody = new ResponseDto(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessage());
+        return ResponseEntity.status(ResponseCode.SUCCESS.getHttpStatus()).body(responseBody);
+    }
+
+    public static ResponseEntity<ResponseDto> getResponseEntityByResponseCode(ResponseCode responseCode){
         return ResponseEntity.status(responseCode.getHttpStatus()).body(new ResponseDto(responseCode.getCode(), responseCode.getMessage()));
     }
 
