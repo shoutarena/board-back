@@ -1,19 +1,14 @@
 package com.study.boardback.controller;
 
-import com.study.boardback.common.ResponseCode;
 import com.study.boardback.dto.request.auth.SignInRequestDto;
 import com.study.boardback.dto.request.auth.SignUpRequestDto;
 import com.study.boardback.dto.response.auth.SignInResponseDto;
 import com.study.boardback.dto.response.auth.SignUpResponseDto;
 import com.study.boardback.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * * Auth Controller
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
@@ -57,6 +55,11 @@ public class AuthController {
         return authService.signUp(requestBody);
     }
 
+    /**
+     * * Sign In
+     * @param requestBody
+     * @return
+     */
     @Operation(summary = "로그인", description = "로그인 API",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(

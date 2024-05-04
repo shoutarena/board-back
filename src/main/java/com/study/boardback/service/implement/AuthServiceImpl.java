@@ -16,6 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+/**
+ * * Auth Service
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -25,17 +28,12 @@ public class AuthServiceImpl implements AuthService {
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    /**
-     * Sinup Service
-      * @param dto
-     * @return
-     */
     @Override
     public ResponseEntity<? super SignUpResponseDto> signUp(SignUpRequestDto dto) {
 
         try {
 
-            // Validation
+            // * Validation
             String email = dto.getEmail();
             boolean existedEmail = memberRepository.existsByEmail(email);
             if(existedEmail) return SignUpResponseDto.duplicateEmail();
@@ -48,15 +46,15 @@ public class AuthServiceImpl implements AuthService {
             boolean existedTelNumber = memberRepository.existsByTelNumber(telNumber);
             if(existedTelNumber) return SignUpResponseDto.duplicateTelNumber();
 
-            // password 암호화
+            // * password 암호화
             String password = dto.getPassword(); // 평문 password
             String encodedPassword = passwordEncoder.encode(password);
             dto.setPassword(encodedPassword);
 
-            // 객체 복사
+            // * 객체 복사
             MemberEntity memberEntity = new MemberEntity(dto);
 
-            // 저장
+            // * 저장
             memberRepository.save(memberEntity);
 
         } catch (Exception e) {
@@ -78,12 +76,12 @@ public class AuthServiceImpl implements AuthService {
             String email = dto.getEmail();
             MemberEntity memberEntity = memberRepository.findByEmail(email);
 
-            // 계정 존재 validation
+            // * 계정 존재 validation
             if(ObjectUtils.isEmpty(memberEntity)){
                 return SignInResponseDto.signInFail();
             }
 
-            // 비밀번호 체크
+            // * 비밀번호 체크
             String password = dto.getPassword();
             String encodedPassword = memberEntity.getPassword();
             boolean isMatched = passwordEncoder.matches(password, encodedPassword);
@@ -91,7 +89,7 @@ public class AuthServiceImpl implements AuthService {
                 return SignInResponseDto.signInFail();
             }
 
-            // 토큰 생성
+            // * 토큰 생성
             token = jwtProvider.create(email);
 
         } catch (Exception e) {
