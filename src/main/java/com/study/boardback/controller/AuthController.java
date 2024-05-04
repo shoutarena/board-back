@@ -1,6 +1,9 @@
 package com.study.boardback.controller;
 
+import com.study.boardback.common.ResponseCode;
+import com.study.boardback.dto.request.auth.SignInRequestDto;
 import com.study.boardback.dto.request.auth.SignUpRequestDto;
+import com.study.boardback.dto.response.auth.SignInResponseDto;
 import com.study.boardback.dto.response.auth.SignUpResponseDto;
 import com.study.boardback.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -52,6 +55,23 @@ public class AuthController {
     @PostMapping("/sign-up")
     public ResponseEntity<? super SignUpResponseDto> signUp(@RequestBody @Valid SignUpRequestDto requestBody){
         return authService.signUp(requestBody);
+    }
+
+    @Operation(summary = "로그인", description = "로그인 API",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                                mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                schema = @Schema(allOf = { SignInRequestDto.class })
+                            )
+            ),
+            responses ={
+                    @ApiResponse(responseCode = "SU", description = "Success.", content = @Content(mediaType = "application/json")),
+                    @ApiResponse(responseCode = "SF", description = "Login information mismatch.", content = @Content(mediaType = "application/json"))
+            }
+    )
+    @PostMapping("/sign-in")
+    public ResponseEntity<? super SignInResponseDto> signIn(@RequestBody @Valid SignInRequestDto requestBody){
+        return authService.signIn(requestBody);
     }
 }
 

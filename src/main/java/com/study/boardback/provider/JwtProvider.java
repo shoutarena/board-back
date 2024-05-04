@@ -18,13 +18,12 @@ public class JwtProvider {
 
     public String create(String email){
         Date expireDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS)); // 1시간
-        String jwt = Jwts.builder()
+        return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(expireDate)
                 .compact();
-        return jwt;
     }
 
     public String validate(String jwt){

@@ -1,9 +1,12 @@
 package com.study.boardback.service.implement;
 
+import com.study.boardback.dto.request.auth.SignInRequestDto;
 import com.study.boardback.dto.request.auth.SignUpRequestDto;
 import com.study.boardback.dto.response.ResponseDto;
+import com.study.boardback.dto.response.auth.SignInResponseDto;
 import com.study.boardback.dto.response.auth.SignUpResponseDto;
 import com.study.boardback.entity.MemberEntity;
+import com.study.boardback.provider.JwtProvider;
 import com.study.boardback.repository.MemberRepository;
 import com.study.boardback.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -11,12 +14,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
     private final MemberRepository memberRepository;
+    private final JwtProvider jwtProvider;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -61,5 +66,39 @@ public class AuthServiceImpl implements AuthService {
 
         return SignUpResponseDto.success();
 
+    }
+
+    @Override
+    public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
+
+        String token = null;
+
+        try {
+
+            String email = dto.getEmail();
+            MemberEntity memberEntity = memberRepository.findByEmail(email);
+
+            // 계정 존재 validation
+            if(ObjectUtils.isEmpty(memberEntity)){
+                return SignInResponseDto.signInFail();
+            }
+
+            // 비밀번호 체크
+            String password = dto.getPassword();
+            String encodedPassword = memberEntity.getPassword();
+            boolean isMatched = passwordEncoder.matches(password, encodedPassword);
+            if(!isMatched){
+                return SignInResponseDto.signInFail();
+            }
+
+            // 토큰 생성
+            token = jwtProvider.create(email);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return SignInResponseDto.success(token);
     }
 }
