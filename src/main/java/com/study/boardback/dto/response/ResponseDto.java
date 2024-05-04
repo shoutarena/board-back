@@ -3,7 +3,6 @@ package com.study.boardback.dto.response;
 import com.study.boardback.common.ResponseCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 
 @Getter
