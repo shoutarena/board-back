@@ -2,7 +2,27 @@
     @Tag(name = "Response Estimate", description = "Response Estimate API")
 
     2. 각 API에 대한 설명을 추가(각 API 별 기입)
-    @Operation(summary = "업체 회원가입", description = "업체 측에서 회원가입 할 때 사용하는 API")
+    @Operation(summary = "업체 회원가입", description = "업체 측에서 회원가입 할 때 사용하는 API",
+        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                            content = @Content(
+                                    examples = {
+                                            @ExampleObject(name = "example",  value = """
+                                            {
+                                                {
+                                                  "email": "email@email.com",
+                                                  "password": "abcd1234",
+                                                  "nickname": "별명",
+                                                  "telNumber": "01012341234",
+                                                  "address": "서울 서초구 서초동",
+                                                  "addressDetail": "좋은아파트 201동 202호",
+                                                  "agreedPersonal": true
+                                                }
+                                            }
+                                            """)
+                                    }
+                            )
+                    )
+    )
 
     4. 파라미터에 대한 정보를 나타낼 수 있다.(각 API 별 기입)
     @Parameters({

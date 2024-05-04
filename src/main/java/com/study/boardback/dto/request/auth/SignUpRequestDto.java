@@ -1,5 +1,6 @@
 package com.study.boardback.dto.request.auth;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.Setter;
 public class SignUpRequestDto {
 
     @NotBlank
+    @Email
     private String email;
     @NotBlank
     @Size(min = 8, max = 20)
