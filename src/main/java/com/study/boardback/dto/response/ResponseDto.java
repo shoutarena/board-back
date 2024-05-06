@@ -25,4 +25,8 @@ public class ResponseDto {
         return ResponseEntity.status(ResponseCode.DATABASE_ERROR.getHttpStatus()).body(responseBody);
     }
 
+    public static ResponseEntity<ResponseDto> validationFailed(){
+        return ResponseDto.getResponseEntityByResponseCode(ResponseCode.VALIDATION_FAILED);
+    }
+
 }
