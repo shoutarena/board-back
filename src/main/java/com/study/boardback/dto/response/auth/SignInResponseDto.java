@@ -3,7 +3,6 @@ package com.study.boardback.dto.response.auth;
 import com.study.boardback.common.ResponseCode;
 import com.study.boardback.dto.response.ResponseDto;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Getter
@@ -19,8 +18,7 @@ public class SignInResponseDto extends ResponseDto {
     }
 
     public static ResponseEntity<SignInResponseDto> success(String token){
-        SignInResponseDto result = new SignInResponseDto(token);
-        return ResponseEntity.status(ResponseCode.SUCCESS.getHttpStatus()).body(result);
+        return ResponseEntity.status(ResponseCode.SUCCESS.getHttpStatus()).body(new SignInResponseDto(token));
     }
 
     public static ResponseEntity<ResponseDto> signInFail(){

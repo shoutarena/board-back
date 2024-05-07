@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -46,19 +47,25 @@ public class WebSecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers("/").permitAll()
-                                .requestMatchers("/api/v1/auth/**").permitAll()
+//                                .requestMatchers(
+//                                        "/"
+//                                        , "/api/v1/auth/**"
+//                                        , "/api/v1/search/**"
+//                                        , "/api/v1/member/*"
+//                                        , "/file/**").permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/auth/**")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/search/**")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/member/*")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/file/**")).permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/board/**").permitAll()
-                                .requestMatchers("/api/v1/search/**").permitAll()
-                                .requestMatchers("/api/v1/user/*").permitAll()
-                                .requestMatchers("/file/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptionHandlingConfigurer ->
                         exceptionHandlingConfigurer.authenticationEntryPoint(new FailedAuthenticationEntryPoint()))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return httpSecurity.build();
+        return httpSecurity.getOrBuild();
     }
 
 }
