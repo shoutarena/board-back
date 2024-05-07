@@ -1,4 +1,4 @@
-package com.study.boardback.config;
+package com.study.boardback.config.Resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;

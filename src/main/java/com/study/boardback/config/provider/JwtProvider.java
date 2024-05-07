@@ -1,4 +1,4 @@
-package com.study.boardback.provider;
+package com.study.boardback.config.provider;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

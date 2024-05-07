@@ -6,7 +6,7 @@ import com.study.boardback.dto.response.ResponseDto;
 import com.study.boardback.dto.response.auth.SignInResponseDto;
 import com.study.boardback.dto.response.auth.SignUpResponseDto;
 import com.study.boardback.entity.MemberEntity;
-import com.study.boardback.provider.JwtProvider;
+import com.study.boardback.config.provider.JwtProvider;
 import com.study.boardback.repository.MemberRepository;
 import com.study.boardback.service.AuthService;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.study.boardback.filter;
 
-import com.study.boardback.provider.JwtProvider;
+import com.study.boardback.config.provider.JwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
