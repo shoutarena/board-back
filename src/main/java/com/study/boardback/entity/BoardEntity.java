@@ -1,5 +1,6 @@
 package com.study.boardback.entity;
 
+import com.study.boardback.dto.request.board.PostBoardRequestDto;
 import com.study.boardback.entity.baseEntity.BaseDateTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,5 +35,14 @@ public class BoardEntity extends BaseDateTimeEntity {
 
     @Column(name = "reg_idx", nullable = false)
     private int regIdx;
+
+    public BoardEntity(PostBoardRequestDto postBoardRequestDto, MemberEntity memberEntity){
+        this.title = postBoardRequestDto.getTitle();
+        this.content = postBoardRequestDto.getContent();
+        this.favoriteCount = 0;
+        this.viewCount = 0;
+        this.commentCount = 0;
+        this.regIdx = memberEntity.getMemberIdx();
+    }
 
 }

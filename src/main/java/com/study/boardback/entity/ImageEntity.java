@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.Objects;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,5 +24,10 @@ public class ImageEntity {
 
     @Column(name = "image", nullable = false)
     private String image;
+
+    public ImageEntity(int boardIdx, String image){
+        this.boardIdx = boardIdx;
+        this.image = image;
+    }
 
 }
