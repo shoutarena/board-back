@@ -3,6 +3,7 @@ package com.study.boardback.controller;
 import com.study.boardback.dto.request.board.PostBoardRequestDto;
 import com.study.boardback.dto.response.board.GetBoardResponseDto;
 import com.study.boardback.dto.response.board.PostBoardResponseDto;
+import com.study.boardback.dto.response.board.PutFavoriteResponseDto;
 import com.study.boardback.service.BoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -49,11 +50,29 @@ public class BoardController {
                     )
             ),
             responses = {
-                    @ApiResponse(responseCode = "", description = "", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+                    @ApiResponse(responseCode = "SU", description = "Success.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
             }
     )
     @GetMapping(value = "{boardIdx}")
     public ResponseEntity<? super GetBoardResponseDto> getBoard(@PathVariable(value = "boardIdx") int boardIdx){
         return boardService.getBoard(boardIdx);
     }
+
+    @Operation(summary = "좋아요", description = "좋아요 API",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE
+                    )
+            ),
+            responses = {
+                @ApiResponse(responseCode = "SU", description = "Success.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                @ApiResponse(responseCode = "NM", description = "This user does not exist.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                @ApiResponse(responseCode = "NB", description = "This board does not exist.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+            }
+    )
+    @PutMapping(value = "/{boardIdx}/favorite")
+    public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(@PathVariable(value = "boardIdx") int boardIdx, @AuthenticationPrincipal String email){
+        return boardService.putFavorite(boardIdx, email);
+    }
+
 }
