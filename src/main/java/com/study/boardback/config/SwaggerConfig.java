@@ -39,7 +39,7 @@ public class SwaggerConfig {
     private Info apiInfo() {
         return new Info()
                 .title("Board Project API List") // API의 제목
-                .description("Board Project API Test Page"); // API에 대한 설명
+                .description("Board Project API List Page"); // API에 대한 설명
                 // .version("1.0.0"); // API의 버전
     }
 
