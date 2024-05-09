@@ -34,7 +34,6 @@ public class FileServiceImpl implements FileService {
         String saveFileName = uuid + extension;
         String savePath = filePath + saveFileName;
 
-
         try {
             file.transferTo(new File(savePath));
         } catch (Exception e) {
@@ -42,8 +41,7 @@ public class FileServiceImpl implements FileService {
             return null;
         }
 
-        String url = fileUrl + saveFileName;
-        return url;
+        return fileUrl + saveFileName;
 
     }
 

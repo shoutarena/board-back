@@ -1,6 +1,6 @@
 package com.study.boardback.config;
 
-import com.study.boardback.config.Resolver.CustomArgumentResolver;
+import com.study.boardback.Resolver.CustomArgumentResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

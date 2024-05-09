@@ -1,6 +1,6 @@
 package com.study.boardback.service.implement;
 
-import com.study.boardback.config.provider.JwtProvider;
+import com.study.boardback.provider.JwtProvider;
 import com.study.boardback.dto.request.auth.SignInRequestDto;
 import com.study.boardback.dto.request.auth.SignUpRequestDto;
 import com.study.boardback.dto.response.ResponseDto;
