@@ -29,9 +29,9 @@ public class MemberController {
                     )
             ),
             responses = {
-                    @ApiResponse(responseCode = "SU", description = "Success.", content = @Content(mediaType = "application/json")),
-                    @ApiResponse(responseCode = "NM", description = "This user does not exist.", content = @Content(mediaType = "application/json")),
-                    @ApiResponse(responseCode = "DBE", description = "Database error", content = @Content(mediaType = "application/json"))
+                    @ApiResponse(responseCode = "SU", description = "Success."),
+                    @ApiResponse(responseCode = "NM", description = "This user does not exist."),
+                    @ApiResponse(responseCode = "DBE", description = "Database error")
             }
     )
     @GetMapping("")

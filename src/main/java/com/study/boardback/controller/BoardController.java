@@ -2,6 +2,7 @@ package com.study.boardback.controller;
 
 import com.study.boardback.dto.request.board.PostBoardRequestDto;
 import com.study.boardback.dto.response.board.GetBoardResponseDto;
+import com.study.boardback.dto.response.board.GetFavoriteListResponseDto;
 import com.study.boardback.dto.response.board.PostBoardResponseDto;
 import com.study.boardback.dto.response.board.PutFavoriteResponseDto;
 import com.study.boardback.service.BoardService;
@@ -35,9 +36,9 @@ public class BoardController {
                     )
             ),
             responses ={
-                    @ApiResponse(responseCode = "SU", description = "Success.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
-                    @ApiResponse(responseCode = "NM", description = "This user does not exist.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
-                    @ApiResponse(responseCode = "DBE", description = "Database error", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+                    @ApiResponse(responseCode = "SU", description = "Success."),
+                    @ApiResponse(responseCode = "NM", description = "This user does not exist."),
+                    @ApiResponse(responseCode = "DBE", description = "Database error")
             }
     )
     @PostMapping("")
@@ -46,11 +47,6 @@ public class BoardController {
     }
     
     @Operation(summary = "게시판 상세", description = "게시판 상세 API",
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE
-                    )
-            ),
             responses = {
                     @ApiResponse(responseCode = "SU", description = "Success.",
                             content = @Content(
@@ -66,15 +62,10 @@ public class BoardController {
     }
 
     @Operation(summary = "좋아요", description = "좋아요 API",
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE
-                    )
-            ),
             responses = {
-                @ApiResponse(responseCode = "SU", description = "Success.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
-                @ApiResponse(responseCode = "NM", description = "This user does not exist.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
-                @ApiResponse(responseCode = "NB", description = "This board does not exist.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                @ApiResponse(responseCode = "SU", description = "Success."),
+                @ApiResponse(responseCode = "NM", description = "This user does not exist."),
+                @ApiResponse(responseCode = "NB", description = "This board does not exist."),
             }
     )
     @PutMapping(value = "/{boardIdx}/favorite")
@@ -82,6 +73,18 @@ public class BoardController {
             @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") int boardIdx,
             @AuthenticationPrincipal String email){
         return boardService.putFavorite(boardIdx, email);
+    }
+
+    @Operation(summary = "좋아요 리스트 조회", description = "좋아요 리스트 조회 API",
+            responses = {
+                @ApiResponse(responseCode = "SU", description = "Success."),
+                @ApiResponse(responseCode = "NB", description = "This board does not exist.")
+            }
+    )
+    @GetMapping(value = "/{boardIdx}/favorite-list")
+    public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(
+            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") int boardIdx){
+        return boardService.getFavoriteList(boardIdx);
     }
 
 }
