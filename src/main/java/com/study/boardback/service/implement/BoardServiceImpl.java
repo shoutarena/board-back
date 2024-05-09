@@ -2,6 +2,7 @@ package com.study.boardback.service.implement;
 
 import com.study.boardback.dto.request.board.PostBoardRequestDto;
 import com.study.boardback.dto.response.ResponseDto;
+import com.study.boardback.dto.response.board.GetBoardResponseDto;
 import com.study.boardback.dto.response.board.PostBoardResponseDto;
 import com.study.boardback.entity.BoardEntity;
 import com.study.boardback.entity.ImageEntity;
@@ -9,12 +10,14 @@ import com.study.boardback.entity.MemberEntity;
 import com.study.boardback.repository.BoardRepository;
 import com.study.boardback.repository.ImageRepository;
 import com.study.boardback.repository.MemberRepository;
+import com.study.boardback.repository.resultSet.GetBoardResultSet;
 import com.study.boardback.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,5 +52,24 @@ public class BoardServiceImpl implements BoardService {
         }
 
         return PostBoardResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardIdx) {
+
+        GetBoardResultSet resultSet = null;
+        List<ImageEntity> imageEntities = new ArrayList<>();
+        try {
+            resultSet = boardRepository.getBoard(boardIdx);
+            if(ObjectUtils.isEmpty(resultSet)) return GetBoardResponseDto.notExistBoard();
+            imageEntities = imageRepository.findByBoardIdx(boardIdx);
+            BoardEntity boardEntity = boardRepository.findByBoardIdx(boardIdx);
+            boardEntity.increaseViewCount();
+            boardRepository.save(boardEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetBoardResponseDto.success(resultSet, imageEntities);
     }
 }

@@ -45,4 +45,7 @@ public class BoardEntity extends BaseDateTimeEntity {
         this.regIdx = memberEntity.getMemberIdx();
     }
 
+    public void increaseViewCount() {
+        this.viewCount++;
+    }
 }

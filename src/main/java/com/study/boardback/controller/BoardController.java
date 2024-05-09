@@ -1,6 +1,7 @@
 package com.study.boardback.controller;
 
 import com.study.boardback.dto.request.board.PostBoardRequestDto;
+import com.study.boardback.dto.response.board.GetBoardResponseDto;
 import com.study.boardback.dto.response.board.PostBoardResponseDto;
 import com.study.boardback.service.BoardService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,10 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/board")
@@ -34,13 +32,28 @@ public class BoardController {
                     )
             ),
             responses ={
-                    @ApiResponse(responseCode = "SU", description = "Success.", content = @Content(mediaType = "application/json")),
-                    @ApiResponse(responseCode = "NM", description = "This user does not exist.", content = @Content(mediaType = "application/json")),
-                    @ApiResponse(responseCode = "DBE", description = "Database error", content = @Content(mediaType = "application/json"))
+                    @ApiResponse(responseCode = "SU", description = "Success.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                    @ApiResponse(responseCode = "NM", description = "This user does not exist.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                    @ApiResponse(responseCode = "DBE", description = "Database error", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
             }
     )
     @PostMapping("")
     public ResponseEntity<? super PostBoardResponseDto> postBoard(@RequestBody @Valid PostBoardRequestDto requestBody, @AuthenticationPrincipal String email){
         return boardService.postBoard(requestBody, email);
+    }
+    
+    @Operation(summary = "게시판 상세", description = "게시판 상세 API",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE
+                    )
+            ),
+            responses = {
+                    @ApiResponse(responseCode = "", description = "", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+            }
+    )
+    @GetMapping(value = "{boardIdx}")
+    public ResponseEntity<? super GetBoardResponseDto> getBoard(@PathVariable(value = "boardIdx") int boardIdx){
+        return boardService.getBoard(boardIdx);
     }
 }
