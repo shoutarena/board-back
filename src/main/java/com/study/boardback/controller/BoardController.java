@@ -6,6 +6,8 @@ import com.study.boardback.dto.response.board.PostBoardResponseDto;
 import com.study.boardback.dto.response.board.PutFavoriteResponseDto;
 import com.study.boardback.service.BoardService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -50,11 +52,16 @@ public class BoardController {
                     )
             ),
             responses = {
-                    @ApiResponse(responseCode = "SU", description = "Success.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+                    @ApiResponse(responseCode = "SU", description = "Success.",
+                            content = @Content(
+                                    schema = @Schema(implementation = GetBoardResponseDto.class),
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE)
+                            )
             }
     )
     @GetMapping(value = "{boardIdx}")
-    public ResponseEntity<? super GetBoardResponseDto> getBoard(@PathVariable(value = "boardIdx") int boardIdx){
+    public ResponseEntity<? super GetBoardResponseDto> getBoard(
+            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") int boardIdx){
         return boardService.getBoard(boardIdx);
     }
 
@@ -71,7 +78,9 @@ public class BoardController {
             }
     )
     @PutMapping(value = "/{boardIdx}/favorite")
-    public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(@PathVariable(value = "boardIdx") int boardIdx, @AuthenticationPrincipal String email){
+    public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(
+            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") int boardIdx,
+            @AuthenticationPrincipal String email){
         return boardService.putFavorite(boardIdx, email);
     }
 

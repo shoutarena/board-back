@@ -43,11 +43,11 @@ public class AuthController {
                     )
             ),
             responses ={
-                    @ApiResponse(responseCode = "SU", description = "Success.", content = @Content(mediaType = "application/json")),
-                    @ApiResponse(responseCode = "DE", description = "Duplicate email.", content = @Content(mediaType = "application/json")),
-                    @ApiResponse(responseCode = "DN", description = "Duplicate nickname.", content = @Content(mediaType = "application/json")),
-                    @ApiResponse(responseCode = "DT", description = "Duplicate tel number.", content = @Content(mediaType = "application/json")),
-                    @ApiResponse(responseCode = "DBE", description = "Database error", content = @Content(mediaType = "application/json"))
+                    @ApiResponse(responseCode = "SU", description = "Success.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                    @ApiResponse(responseCode = "DE", description = "Duplicate email.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                    @ApiResponse(responseCode = "DN", description = "Duplicate nickname.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                    @ApiResponse(responseCode = "DT", description = "Duplicate tel number.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                    @ApiResponse(responseCode = "DBE", description = "Database error", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
             }
     )
     @PostMapping("/sign-up")
@@ -68,8 +68,8 @@ public class AuthController {
                             )
             ),
             responses ={
-                    @ApiResponse(responseCode = "SU", description = "Success.", content = @Content(mediaType = "application/json")),
-                    @ApiResponse(responseCode = "SF", description = "Login information mismatch.", content = @Content(mediaType = "application/json"))
+                    @ApiResponse(responseCode = "SU", description = "Success.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                    @ApiResponse(responseCode = "SF", description = "Login information mismatch.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
             }
     )
     @PostMapping("/sign-in")

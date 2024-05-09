@@ -3,6 +3,8 @@ package com.study.boardback.controller;
 import com.study.boardback.dto.request.auth.SignUpRequestDto;
 import com.study.boardback.service.FileService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,11 +31,11 @@ public class FileController {
                     )
             ),
             responses ={
-                    @ApiResponse(responseCode = "SU", description = "Success.", content = @Content(mediaType = "application/json")),
-                    @ApiResponse(responseCode = "DE", description = "Duplicate email.", content = @Content(mediaType = "application/json")),
-                    @ApiResponse(responseCode = "DN", description = "Duplicate nickname.", content = @Content(mediaType = "application/json")),
-                    @ApiResponse(responseCode = "DT", description = "Duplicate tel number.", content = @Content(mediaType = "application/json")),
-                    @ApiResponse(responseCode = "DBE", description = "Database error", content = @Content(mediaType = "application/json"))
+                    @ApiResponse(responseCode = "SU", description = "Success.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                    @ApiResponse(responseCode = "DE", description = "Duplicate email.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                    @ApiResponse(responseCode = "DN", description = "Duplicate nickname.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                    @ApiResponse(responseCode = "DT", description = "Duplicate tel number.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                    @ApiResponse(responseCode = "DBE", description = "Database error", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
             })
     @PostMapping("/upload")
     public String upload(@RequestParam("file") MultipartFile file){
@@ -42,7 +44,7 @@ public class FileController {
 
     @Operation(summary = "이미지 불러오기", description = "이미지 조회")
     @GetMapping(value = "{fileName}", produces = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE })
-    public Resource getImage(@PathVariable("fileName") String fileName){
+    public Resource getImage(@Parameter(name = "fileName", description = "파일 명", in = ParameterIn.PATH) @PathVariable("fileName") String fileName){
        return fileService.getImage(fileName);
     }
 
