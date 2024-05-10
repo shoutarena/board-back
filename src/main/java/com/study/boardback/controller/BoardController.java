@@ -124,5 +124,17 @@ public class BoardController {
         return boardService.getCommentList(boardIdx);
     }
 
+    @Operation(summary = "게시물 조회수 증가" , description = "게시물 조회수 증가 API",
+            responses = {
+                    @ApiResponse(responseCode = "SU", description = "Success."),
+                    @ApiResponse(responseCode = "NB", description = "This board does not exist."),
+                    @ApiResponse(responseCode = "DBE", description = "Database error")
+            }
+    )
+    @PatchMapping("/{boardIdx}/increase-view-count")
+    public ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(
+            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") Integer boardIdx) {
+        return boardService.increaseViewCount(boardIdx);
+    }
 
 }

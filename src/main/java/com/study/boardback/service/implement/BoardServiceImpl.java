@@ -60,12 +60,11 @@ public class BoardServiceImpl implements BoardService {
         GetBoardResultSet resultSet = null;
         List<ImageEntity> imageEntities = new ArrayList<>();
         try {
+
             resultSet = boardRepository.getBoard(boardIdx);
             if(ObjectUtils.isEmpty(resultSet)) return ResponseDto.noExistBoard();
             imageEntities = imageRepository.findByBoardIdx(boardIdx);
-            BoardEntity boardEntity = boardRepository.findByBoardIdx(boardIdx);
-            boardEntity.increaseViewCount();
-            boardRepository.save(boardEntity);
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
@@ -161,5 +160,20 @@ public class BoardServiceImpl implements BoardService {
         }
 
         return GetCommentListResponseDto.success(resultSets);
+    }
+
+    @Override
+    public ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(Integer boardIdx) {
+
+        try {
+            BoardEntity boardEntity = boardRepository.findByBoardIdx(boardIdx);
+            if(ObjectUtils.isEmpty(boardEntity)) return ResponseDto.noExistBoard();
+            boardEntity.increaseViewCount();
+            boardRepository.save(boardEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return ResponseDto.success();
     }
 }

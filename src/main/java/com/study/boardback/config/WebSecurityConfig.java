@@ -29,7 +29,7 @@ public class WebSecurityConfig {
         return request -> {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedHeaders(List.of("*"));
-            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
             config.setAllowedOriginPatterns(List.of("http://localhost:3000")); // ⭐️ 허용할 origin
             config.setAllowCredentials(true);
             return config;
