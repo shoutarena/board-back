@@ -23,8 +23,4 @@ public class GetFavoriteListResponseDto extends ResponseDto {
         return ResponseEntity.status(ResponseCode.SUCCESS.getHttpStatus()).body(new GetFavoriteListResponseDto(resultSets));
     }
 
-    public static ResponseEntity<ResponseDto> noExistBoard(){
-        return ResponseDto.getResponseEntityByResponseCode(ResponseCode.NOT_EXISTED_BOARD);
-    }
-
 }

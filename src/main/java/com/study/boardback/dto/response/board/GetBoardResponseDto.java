@@ -1,5 +1,6 @@
 package com.study.boardback.dto.response.board;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.study.boardback.common.ResponseCode;
 import com.study.boardback.dto.response.ResponseDto;
 import com.study.boardback.entity.ImageEntity;
@@ -18,6 +19,7 @@ public class GetBoardResponseDto extends ResponseDto {
     private String title;
     private String content;
     private List<String> boardImageList;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime regDt;
     private String writerEmail;
     private String writerNickname;
@@ -40,10 +42,6 @@ public class GetBoardResponseDto extends ResponseDto {
     public static ResponseEntity<GetBoardResponseDto> success(GetBoardResultSet resultSet, List<ImageEntity> imageEntities){
         GetBoardResponseDto result = new GetBoardResponseDto(resultSet, imageEntities);
         return ResponseEntity.status(ResponseCode.SUCCESS.getHttpStatus()).body(result);
-    }
-
-    public static ResponseEntity<ResponseDto> notExistBoard(){
-        return ResponseDto.getResponseEntityByResponseCode(ResponseCode.NOT_EXISTED_BOARD);
     }
 
 }

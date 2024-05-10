@@ -7,6 +7,7 @@ import com.study.boardback.dto.response.board.*;
 import com.study.boardback.entity.*;
 import com.study.boardback.repository.*;
 import com.study.boardback.repository.resultSet.GetBoardResultSet;
+import com.study.boardback.repository.resultSet.GetCommentListResultSet;
 import com.study.boardback.repository.resultSet.GetFavoriteListResultSet;
 import com.study.boardback.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class BoardServiceImpl implements BoardService {
 
         try {
             MemberEntity memberEntity = memberRepository.findByEmail(email);
-            if(ObjectUtils.isEmpty(memberEntity)) return PostBoardResponseDto.notExistUser();
+            if(ObjectUtils.isEmpty(memberEntity)) return ResponseDto.noExistMember();
 
             BoardEntity boardEntity = new BoardEntity(postBoardRequestDto, memberEntity);
             boardRepository.save(boardEntity);
@@ -60,7 +61,7 @@ public class BoardServiceImpl implements BoardService {
         List<ImageEntity> imageEntities = new ArrayList<>();
         try {
             resultSet = boardRepository.getBoard(boardIdx);
-            if(ObjectUtils.isEmpty(resultSet)) return GetBoardResponseDto.notExistBoard();
+            if(ObjectUtils.isEmpty(resultSet)) return ResponseDto.noExistBoard();
             imageEntities = imageRepository.findByBoardIdx(boardIdx);
             BoardEntity boardEntity = boardRepository.findByBoardIdx(boardIdx);
             boardEntity.increaseViewCount();
@@ -127,9 +128,9 @@ public class BoardServiceImpl implements BoardService {
 
         try {
             BoardEntity boardEntity = boardRepository.findByBoardIdx(boardIdx);
-            if(ObjectUtils.isEmpty(boardEntity)) return PostCommentResponseDto.noExistsBoard();
+            if(ObjectUtils.isEmpty(boardEntity)) return ResponseDto.noExistBoard();
             MemberEntity memberEntity = memberRepository.findByEmail(email);
-            if(ObjectUtils.isEmpty(memberEntity)) return PostCommentResponseDto.noExistsMember();
+            if(ObjectUtils.isEmpty(memberEntity)) return ResponseDto.noExistMember();
 
             CommentEntity commentEntity = new CommentEntity(boardIdx, requestBody, memberEntity.getMemberIdx());
             commentRepository.save(commentEntity);
@@ -143,5 +144,22 @@ public class BoardServiceImpl implements BoardService {
         }
 
         return ResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardIdx) {
+
+        List<GetCommentListResultSet> resultSets = new ArrayList<>();
+        try {
+            boolean existedBoard = boardRepository.existsByBoardIdx(boardIdx);
+            if(!existedBoard) return  ResponseDto.noExistBoard();
+            resultSets = commentRepository.getCommentList(boardIdx);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetCommentListResponseDto.success(resultSets);
     }
 }

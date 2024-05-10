@@ -105,10 +105,16 @@ public class BoardController {
     )
     @PostMapping("/{boardIdx}/comment")
     public ResponseEntity<? super PostCommentResponseDto> postComment(
-            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @Valid @PathVariable(value = "boardIdx") Integer boardIdx
-            , @RequestBody PostCommentRequestDto requestBody
+            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") Integer boardIdx
+            , @Valid @RequestBody PostCommentRequestDto requestBody
             , @AuthenticationPrincipal String email){
         return boardService.postComment(boardIdx, requestBody, email);
+    }
+
+    @GetMapping("/{boardIdx}/comment-list")
+    public ResponseEntity<? super GetCommentListResponseDto> getCommentList(
+            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") Integer boardIdx){
+        return boardService.getCommentList(boardIdx);
     }
 
 

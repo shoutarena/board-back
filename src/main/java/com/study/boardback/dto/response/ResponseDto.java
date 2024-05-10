@@ -29,4 +29,12 @@ public class ResponseDto {
         return ResponseDto.getResponseEntityByResponseCode(ResponseCode.VALIDATION_FAILED);
     }
 
+    public static ResponseEntity<ResponseDto> noExistBoard(){
+        return ResponseDto.getResponseEntityByResponseCode(ResponseCode.NOT_EXISTED_BOARD);
+    }
+
+    public static ResponseEntity<ResponseDto> noExistMember(){
+        return ResponseDto.getResponseEntityByResponseCode(ResponseCode.NOT_EXISTED_MEMBER);
+    }
+
 }
