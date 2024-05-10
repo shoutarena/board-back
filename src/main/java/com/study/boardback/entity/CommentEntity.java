@@ -1,6 +1,6 @@
 package com.study.boardback.entity;
 
-import com.study.boardback.entity.baseEntity.BaseDateTimeEntity;
+import com.study.boardback.dto.request.board.PostCommentRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Table(name = "comment")
 @Entity(name = "comment")
 @EntityListeners(AuditingEntityListener.class)
-public class CommentEntity extends BaseDateTimeEntity {
+public class CommentEntity {
     @Id
     @Column(name = "comment_idx", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,5 +30,15 @@ public class CommentEntity extends BaseDateTimeEntity {
     
     @Column(name = "content", nullable = false)
     private String content;
+
+    @CreatedDate
+    @Column(name = "reg_dt", nullable = false)
+    private LocalDateTime regDt;
+
+    public CommentEntity(int boardIdx, PostCommentRequestDto requestDto, Integer memberIdx){
+        this.boardIdx = boardIdx;
+        this.content = requestDto.getComment();
+        this.regIdx = memberIdx;
+    }
 
 }

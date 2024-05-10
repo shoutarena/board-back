@@ -1,19 +1,11 @@
 package com.study.boardback.service.implement;
 
 import com.study.boardback.dto.request.board.PostBoardRequestDto;
+import com.study.boardback.dto.request.board.PostCommentRequestDto;
 import com.study.boardback.dto.response.ResponseDto;
-import com.study.boardback.dto.response.board.GetBoardResponseDto;
-import com.study.boardback.dto.response.board.GetFavoriteListResponseDto;
-import com.study.boardback.dto.response.board.PostBoardResponseDto;
-import com.study.boardback.dto.response.board.PutFavoriteResponseDto;
-import com.study.boardback.entity.BoardEntity;
-import com.study.boardback.entity.FavoriteEntity;
-import com.study.boardback.entity.ImageEntity;
-import com.study.boardback.entity.MemberEntity;
-import com.study.boardback.repository.BoardRepository;
-import com.study.boardback.repository.FavoriteRepository;
-import com.study.boardback.repository.ImageRepository;
-import com.study.boardback.repository.MemberRepository;
+import com.study.boardback.dto.response.board.*;
+import com.study.boardback.entity.*;
+import com.study.boardback.repository.*;
 import com.study.boardback.repository.resultSet.GetBoardResultSet;
 import com.study.boardback.repository.resultSet.GetFavoriteListResultSet;
 import com.study.boardback.service.BoardService;
@@ -33,6 +25,7 @@ public class BoardServiceImpl implements BoardService {
     private final MemberRepository memberRepository;
     private final ImageRepository imageRepository;
     private final FavoriteRepository favoriteRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto postBoardRequestDto, String email) {
@@ -80,7 +73,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(int boardIdx, String email) {
+    public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardIdx, String email) {
 
         try {
 
@@ -110,7 +103,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(int boardIdx) {
+    public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(Integer boardIdx) {
 
         List<GetFavoriteListResultSet> resultSets = new ArrayList<>();
 
@@ -127,5 +120,28 @@ public class BoardServiceImpl implements BoardService {
         }
 
         return GetFavoriteListResponseDto.success(resultSets);
+    }
+
+    @Override
+    public ResponseEntity<? super PostCommentResponseDto> postComment(Integer boardIdx, PostCommentRequestDto requestBody, String email) {
+
+        try {
+            BoardEntity boardEntity = boardRepository.findByBoardIdx(boardIdx);
+            if(ObjectUtils.isEmpty(boardEntity)) return PostCommentResponseDto.noExistsBoard();
+            MemberEntity memberEntity = memberRepository.findByEmail(email);
+            if(ObjectUtils.isEmpty(memberEntity)) return PostCommentResponseDto.noExistsMember();
+
+            CommentEntity commentEntity = new CommentEntity(boardIdx, requestBody, memberEntity.getMemberIdx());
+            commentRepository.save(commentEntity);
+
+            boardEntity.increaseCommentCount();
+            boardRepository.save(boardEntity);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return ResponseDto.success();
     }
 }

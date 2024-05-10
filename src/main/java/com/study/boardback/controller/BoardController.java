@@ -1,10 +1,8 @@
 package com.study.boardback.controller;
 
 import com.study.boardback.dto.request.board.PostBoardRequestDto;
-import com.study.boardback.dto.response.board.GetBoardResponseDto;
-import com.study.boardback.dto.response.board.GetFavoriteListResponseDto;
-import com.study.boardback.dto.response.board.PostBoardResponseDto;
-import com.study.boardback.dto.response.board.PutFavoriteResponseDto;
+import com.study.boardback.dto.request.board.PostCommentRequestDto;
+import com.study.boardback.dto.response.board.*;
 import com.study.boardback.service.BoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -52,12 +50,14 @@ public class BoardController {
                             content = @Content(
                                     schema = @Schema(implementation = GetBoardResponseDto.class),
                                     mediaType = MediaType.APPLICATION_JSON_VALUE)
-                            )
+                            ),
+                    @ApiResponse(responseCode = "NB", description = "This board does not exist."),
+                    @ApiResponse(responseCode = "DBE", description = "Database error")
             }
     )
     @GetMapping(value = "{boardIdx}")
     public ResponseEntity<? super GetBoardResponseDto> getBoard(
-            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") int boardIdx){
+            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") Integer boardIdx){
         return boardService.getBoard(boardIdx);
     }
 
@@ -66,11 +66,12 @@ public class BoardController {
                 @ApiResponse(responseCode = "SU", description = "Success."),
                 @ApiResponse(responseCode = "NM", description = "This user does not exist."),
                 @ApiResponse(responseCode = "NB", description = "This board does not exist."),
+                @ApiResponse(responseCode = "DBE", description = "Database error")
             }
     )
     @PutMapping(value = "/{boardIdx}/favorite")
     public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(
-            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") int boardIdx,
+            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") Integer boardIdx,
             @AuthenticationPrincipal String email){
         return boardService.putFavorite(boardIdx, email);
     }
@@ -78,13 +79,37 @@ public class BoardController {
     @Operation(summary = "좋아요 리스트 조회", description = "좋아요 리스트 조회 API",
             responses = {
                 @ApiResponse(responseCode = "SU", description = "Success."),
-                @ApiResponse(responseCode = "NB", description = "This board does not exist.")
+                @ApiResponse(responseCode = "NB", description = "This board does not exist."),
+                @ApiResponse(responseCode = "DBE", description = "Database error")
             }
     )
     @GetMapping(value = "/{boardIdx}/favorite-list")
     public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(
-            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") int boardIdx){
+            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") Integer boardIdx){
         return boardService.getFavoriteList(boardIdx);
     }
+
+    @Operation(summary = "댓글작성", description = "댓글 작성 API",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(allOf = {})
+                    )
+            ),
+            responses = {
+                @ApiResponse(responseCode = "SU", description = "Success."),
+                @ApiResponse(responseCode = "NB", description = "This board does not exist."),
+                @ApiResponse(responseCode = "NM", description = "This user does not exist."),
+                @ApiResponse(responseCode = "DBE", description = "Database error")
+            }
+    )
+    @PostMapping("/{boardIdx}/comment")
+    public ResponseEntity<? super PostCommentResponseDto> postComment(
+            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @Valid @PathVariable(value = "boardIdx") Integer boardIdx
+            , @RequestBody PostCommentRequestDto requestBody
+            , @AuthenticationPrincipal String email){
+        return boardService.postComment(boardIdx, requestBody, email);
+    }
+
 
 }
