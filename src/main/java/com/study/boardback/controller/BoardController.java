@@ -93,7 +93,7 @@ public class BoardController {
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(allOf = {})
+                            schema = @Schema(allOf = {PostCommentResponseDto.class})
                     )
             ),
             responses = {
@@ -111,6 +111,13 @@ public class BoardController {
         return boardService.postComment(boardIdx, requestBody, email);
     }
 
+    @Operation(summary = "댓글 조회", description = "댓글 조회 API",
+            responses = {
+                @ApiResponse(responseCode = "SU", description = "Success."),
+                @ApiResponse(responseCode = "NB", description = "This board does not exist."),
+                @ApiResponse(responseCode = "DBE", description = "Database error")
+            }
+    )
     @GetMapping("/{boardIdx}/comment-list")
     public ResponseEntity<? super GetCommentListResponseDto> getCommentList(
             @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") Integer boardIdx){
