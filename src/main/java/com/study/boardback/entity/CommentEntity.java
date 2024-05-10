@@ -37,7 +37,7 @@ public class CommentEntity {
 
     public CommentEntity(int boardIdx, PostCommentRequestDto requestDto, Integer memberIdx){
         this.boardIdx = boardIdx;
-        this.content = requestDto.getComment();
+        this.content = requestDto.getContent();
         this.regIdx = memberIdx;
     }
 
