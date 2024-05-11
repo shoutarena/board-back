@@ -20,4 +20,6 @@ public interface BoardService {
     ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardIdx);
 
     ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(Integer boardIdx);
+
+    ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardIdx, String email);
 }

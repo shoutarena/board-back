@@ -22,7 +22,7 @@ public enum ResponseCode {
     AUTHORIZATION_FAILED("AF", HttpStatus.UNAUTHORIZED.value(), "Authorization Failed."),
 
     // HTTP Status 403
-    NO_PERMISSION("NP", HttpStatus.FORBIDDEN.value(), "Do not hav permission."),
+    NO_PERMISSION("NP", HttpStatus.FORBIDDEN.value(), "Do not have permission."),
 
     // HTTP Status 500
     DATABASE_ERROR("DBE", HttpStatus.INTERNAL_SERVER_ERROR.value(), "Database error");

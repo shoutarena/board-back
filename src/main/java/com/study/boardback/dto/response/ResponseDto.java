@@ -37,4 +37,7 @@ public class ResponseDto {
         return ResponseDto.getResponseEntityByResponseCode(ResponseCode.NOT_EXISTED_MEMBER);
     }
 
+    public static ResponseEntity<ResponseDto> noPermission(){
+        return ResponseDto.getResponseEntityByResponseCode(ResponseCode.NO_PERMISSION);
+    }
 }

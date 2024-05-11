@@ -43,6 +43,22 @@ public class BoardController {
     public ResponseEntity<? super PostBoardResponseDto> postBoard(@RequestBody @Valid PostBoardRequestDto requestBody, @AuthenticationPrincipal String email){
         return boardService.postBoard(requestBody, email);
     }
+
+    @Operation(summary = "게시물 삭제", description = "게시물 삭제 API",
+            responses = {
+                    @ApiResponse(responseCode = "SU", description = "Success."),
+                    @ApiResponse(responseCode = "NM", description = "This user does not exist."),
+                    @ApiResponse(responseCode = "NB", description = "This board does not exist."),
+                    @ApiResponse(responseCode = "NP", description = "Do not hav permission."),
+                    @ApiResponse(responseCode = "DBE", description = "Database error")
+            }
+    )
+    @DeleteMapping("/{boardIdx}")
+    public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(
+            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") Integer boardIdx
+            , @AuthenticationPrincipal String email){
+        return boardService.deleteBoard(boardIdx, email);
+    }
     
     @Operation(summary = "게시판 상세", description = "게시판 상세 API",
             responses = {

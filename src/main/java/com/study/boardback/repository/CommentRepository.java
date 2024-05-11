@@ -2,6 +2,7 @@ package com.study.boardback.repository;
 
 import com.study.boardback.entity.CommentEntity;
 import com.study.boardback.repository.resultSet.GetCommentListResultSet;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -24,4 +25,7 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Integer>
             nativeQuery = true
     )
     List<GetCommentListResultSet> getCommentList(Integer boardIdx);
+
+    @Transactional
+    void deleteByBoardIdx(Integer boardIdx);
 }
