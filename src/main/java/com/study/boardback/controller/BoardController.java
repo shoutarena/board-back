@@ -197,4 +197,5 @@ public class BoardController {
     public ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList(){
         return boardService.getTop3BoardList();
     }
+
 }

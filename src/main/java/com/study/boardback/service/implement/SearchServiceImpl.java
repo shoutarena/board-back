@@ -1,0 +1,33 @@
+package com.study.boardback.service.implement;
+
+import com.study.boardback.dto.response.ResponseDto;
+import com.study.boardback.dto.response.search.GetPopularListResponseDto;
+import com.study.boardback.repository.SearchLogRepository;
+import com.study.boardback.repository.resultSet.GetPopularListResultSet;
+import com.study.boardback.service.SearchService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class SearchServiceImpl implements SearchService {
+
+    private final SearchLogRepository searchLogRepository;
+
+    @Override
+    public ResponseEntity<? super GetPopularListResponseDto> getPopularList() {
+
+        List<GetPopularListResultSet> popularList = new ArrayList<>();
+        try {
+            popularList = searchLogRepository.findByPopularList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetPopularListResponseDto.success(popularList);
+    }
+}
