@@ -186,4 +186,15 @@ public class BoardController {
     public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList(){
         return boardService.getLatestBoardList();
     }
+
+    @Operation(summary = "주간 상위 3 게시물 리스트 조회", description = "주간 상위 3 게시물 리스트 조회 API",
+            responses = {
+                    @ApiResponse(responseCode = "SU", description = "Success."),
+                    @ApiResponse(responseCode = "DBE", description = "Database error")
+            }
+    )
+    @GetMapping("/top-3")
+    public ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList(){
+        return boardService.getTop3BoardList();
+    }
 }
