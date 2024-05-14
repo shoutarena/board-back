@@ -24,4 +24,6 @@ public interface BoardService {
     ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardIdx, String email);
 
     ResponseEntity<? super PatchBoardResponseDto> patchBoard(PostBoardRequestDto requestBody, Integer boardIdx, String email);
+
+    ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList();
 }

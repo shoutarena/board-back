@@ -176,4 +176,14 @@ public class BoardController {
         return boardService.increaseViewCount(boardIdx);
     }
 
+    @Operation(summary = "최신 게시물 조회", description = "최신 게시물 조회 API",
+            responses = {
+                    @ApiResponse(responseCode = "SU", description = "Success."),
+                    @ApiResponse(responseCode = "DBE", description = "Database error")
+            }
+    )
+    @GetMapping("/latest-list")
+    public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList(){
+        return boardService.getLatestBoardList();
+    }
 }

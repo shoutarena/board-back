@@ -29,6 +29,7 @@ public class BoardServiceImpl implements BoardService {
     private final ImageRepository imageRepository;
     private final FavoriteRepository favoriteRepository;
     private final CommentRepository commentRepository;
+    private final BoardListViewRepository boardListViewRepository;
 
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto postBoardRequestDto, String email) {
@@ -232,5 +233,19 @@ public class BoardServiceImpl implements BoardService {
             return ResponseDto.databaseError();
         }
         return ResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList() {
+
+        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+
+        try {
+            boardListViewEntities = boardListViewRepository.findByOrderByRegDtDesc();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetLatestBoardListResponseDto.success(boardListViewEntities);
     }
 }
