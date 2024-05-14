@@ -2,6 +2,7 @@ package com.study.boardback.service.implement;
 
 import com.study.boardback.dto.response.ResponseDto;
 import com.study.boardback.dto.response.member.GetSignInMemberResponseDto;
+import com.study.boardback.dto.response.member.GetUserResponseDto;
 import com.study.boardback.entity.MemberEntity;
 import com.study.boardback.repository.MemberRepository;
 import com.study.boardback.service.MemberService;
@@ -29,5 +30,20 @@ public class MemberServiceImpl implements MemberService {
             return ResponseDto.databaseError();
         }
         return GetSignInMemberResponseDto.success(memberEntity);
+    }
+
+    @Override
+    public ResponseEntity<? super GetUserResponseDto> getUserByEmail(String email) {
+
+        MemberEntity memberEntity = null;
+        try {
+           memberEntity = memberRepository.findByEmail(email);
+           if(ObjectUtils.isEmpty(memberEntity)) return ResponseDto.noExistMember();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetUserResponseDto.success(memberEntity);
     }
 }
