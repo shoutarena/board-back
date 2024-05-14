@@ -2,8 +2,10 @@ package com.study.boardback.service.implement;
 
 import com.study.boardback.dto.response.ResponseDto;
 import com.study.boardback.dto.response.search.GetPopularListResponseDto;
+import com.study.boardback.dto.response.search.GetRelationListResponseDto;
 import com.study.boardback.repository.SearchLogRepository;
 import com.study.boardback.repository.resultSet.GetPopularListResultSet;
+import com.study.boardback.repository.resultSet.GetRelationListResultSet;
 import com.study.boardback.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +31,17 @@ public class SearchServiceImpl implements SearchService {
             return ResponseDto.databaseError();
         }
         return GetPopularListResponseDto.success(popularList);
+    }
+
+    @Override
+    public ResponseEntity<? super GetRelationListResponseDto> getRelationList(String searchWord) {
+        List<GetRelationListResultSet> relationListResultSets = new ArrayList<>();
+        try {
+            relationListResultSets = searchLogRepository.findByRelationList(searchWord);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetRelationListResponseDto.success(relationListResultSets);
     }
 }
