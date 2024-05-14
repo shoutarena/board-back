@@ -198,4 +198,17 @@ public class BoardController {
         return boardService.getTop3BoardList();
     }
 
+    @Operation(summary = "검색어 조회", description = "검색어 조회 API",
+            responses = {
+                    @ApiResponse(responseCode = "SU", description = "Success."),
+                    @ApiResponse(responseCode = "DBE", description = "Database error")
+            }
+    )
+    @GetMapping(value = {"/search-list/{searchWord}", "/search-list/{searchWord}/{preSearchWord}"})
+    public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(
+            @Parameter(name = "searchWord", description = "검색어", in = ParameterIn.PATH) @PathVariable(value = "searchWord") String searchWord,
+            @Parameter(name = "preSearchWord", description = "이전 검색어", in = ParameterIn.PATH) @PathVariable(value = "preSearchWord", required = false) String preSearchWord){
+        return boardService.getSearchBoardList(searchWord, preSearchWord);
+    }
+
 }

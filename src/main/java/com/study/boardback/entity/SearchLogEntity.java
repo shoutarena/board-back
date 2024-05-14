@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.Objects;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,5 +27,11 @@ public class SearchLogEntity {
     
     @Column(name = "relation", nullable = false)
     private boolean relation;
+
+    public SearchLogEntity(String searchWord, String relationWord, boolean relation){
+        this.searchWord = searchWord;
+        this.relationWord = relationWord;
+        this.relation = relation;
+    }
 
 }
