@@ -215,6 +215,7 @@ public class BoardServiceImpl implements BoardService {
             if(ObjectUtils.isEmpty(boardEntity)) return ResponseDto.noExistBoard();
             boolean isWriter = boardEntity.getRegIdx() == memberEntity.getMemberIdx();
             if(!isWriter) return ResponseDto.noPermission();
+            boardEntity.patchBoard(requestBody);
             boardRepository.save(boardEntity);
 
             imageRepository.deleteByBoardIdx(boardIdx);
