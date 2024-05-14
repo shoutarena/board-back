@@ -285,4 +285,16 @@ public class BoardServiceImpl implements BoardService {
         }
         return GetSearchBoardListResponseDto.success(boardListViewEntities);
     }
+
+    @Override
+    public ResponseEntity<? super GetMemberBoardListResponseDto> getUserBoardList(String email) {
+        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+        try {
+            boardListViewEntities = boardListViewRepository.findByEmailOrderByRegDtDesc(email);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetMemberBoardListResponseDto.success(boardListViewEntities);
+    }
 }

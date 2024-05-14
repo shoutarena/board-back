@@ -211,4 +211,16 @@ public class BoardController {
         return boardService.getSearchBoardList(searchWord, preSearchWord);
     }
 
+    @Operation(summary = "특정 유저 게시물 리스트 조회", description = "특정 유저 게시물 리스트 조회 API",
+            responses = {
+                    @ApiResponse(responseCode = "SU", description = "Success."),
+                    @ApiResponse(responseCode = "DBE", description = "Database error")
+            }
+    )
+    @GetMapping("/user-board-list/{email}")
+    public ResponseEntity<? super GetMemberBoardListResponseDto> getUserBoardList(
+            @Parameter(name = "email", description = "조회 email", in = ParameterIn.PATH) @PathVariable(value = "email") String email){
+        return boardService.getUserBoardList(email);
+    }
+
 }
