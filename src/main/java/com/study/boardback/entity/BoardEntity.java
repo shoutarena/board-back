@@ -1,5 +1,6 @@
 package com.study.boardback.entity;
 
+import com.study.boardback.dto.request.board.PatchBoardRequestDto;
 import com.study.boardback.dto.request.board.PostBoardRequestDto;
 import com.study.boardback.entity.baseEntity.BaseDateTimeEntity;
 import jakarta.persistence.*;
@@ -59,6 +60,10 @@ public class BoardEntity extends BaseDateTimeEntity {
 
     public void increaseCommentCount() {
         this.commentCount++;
+    }
+    public void patchBoard(PatchBoardRequestDto patchBoardRequestDto, MemberEntity memberEntity){
+        this.title = patchBoardRequestDto.getTitle();
+        this.content = patchBoardRequestDto.getContent();
     }
 
 }

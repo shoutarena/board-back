@@ -1,5 +1,6 @@
 package com.study.boardback.controller;
 
+import com.study.boardback.dto.request.board.PatchBoardRequestDto;
 import com.study.boardback.dto.request.board.PostBoardRequestDto;
 import com.study.boardback.dto.request.board.PostCommentRequestDto;
 import com.study.boardback.dto.response.board.*;
@@ -42,6 +43,28 @@ public class BoardController {
     @PostMapping("")
     public ResponseEntity<? super PostBoardResponseDto> postBoard(@RequestBody @Valid PostBoardRequestDto requestBody, @AuthenticationPrincipal String email){
         return boardService.postBoard(requestBody, email);
+    }
+
+    @Operation(summary = "게시판 수정", description = "게시판 수정 API",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(allOf = { PatchBoardRequestDto.class })
+                    )
+            ),
+            responses = {
+                @ApiResponse(responseCode = "SU", description = "Success."),
+                @ApiResponse(responseCode = "NM", description = "This user does not exist."),
+                    @ApiResponse(responseCode = "NB", description = "This board does not exist."),
+                    @ApiResponse(responseCode = "NP", description = "Do not hav permission."),
+                @ApiResponse(responseCode = "DBE", description = "Database error")
+            }
+    )
+    @PatchMapping("/{boardIdx}")
+    public ResponseEntity<? super PatchBoardResponseDto> patchBoard(
+            @Parameter(name = "boardIdx", description = "게시물 번호", in = ParameterIn.PATH) @PathVariable(value = "boardIdx") Integer boardIdx,
+            @RequestBody @Valid PostBoardRequestDto requestBody, @AuthenticationPrincipal String email){
+        return boardService.patchBoard(requestBody, boardIdx, email);
     }
 
     @Operation(summary = "게시물 삭제", description = "게시물 삭제 API",

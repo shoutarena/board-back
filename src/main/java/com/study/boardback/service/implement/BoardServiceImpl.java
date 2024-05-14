@@ -13,10 +13,12 @@ import com.study.boardback.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,11 +42,13 @@ public class BoardServiceImpl implements BoardService {
 
             int boardIdx = boardEntity.getBoardIdx();
             List<String> boardImageList = postBoardRequestDto.getBoardImageList();
-            List<ImageEntity> imageEntities = boardImageList.stream()
-                    .map(img -> new ImageEntity(boardIdx, img))
-                    .toList();
+            if(!CollectionUtils.isEmpty(boardImageList)){
+                List<ImageEntity> imageEntities = boardImageList.stream()
+                        .map(img -> new ImageEntity(boardIdx, img))
+                        .toList();
 
-            imageRepository.saveAll(imageEntities);
+                imageRepository.saveAll(imageEntities);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -198,6 +202,34 @@ public class BoardServiceImpl implements BoardService {
             return ResponseDto.databaseError();
         }
 
+        return ResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PostBoardRequestDto requestBody, Integer boardIdx, String email) {
+
+        try {
+            MemberEntity memberEntity = memberRepository.findByEmail(email);
+            if(ObjectUtils.isEmpty(memberEntity)) return ResponseDto.noExistMember();
+            BoardEntity boardEntity = boardRepository.findByBoardIdx(boardIdx);
+            if(ObjectUtils.isEmpty(boardEntity)) return ResponseDto.noExistBoard();
+            boolean isWriter = boardEntity.getRegIdx() == memberEntity.getMemberIdx();
+            if(!isWriter) return ResponseDto.noPermission();
+            boardRepository.save(boardEntity);
+
+            imageRepository.deleteByBoardIdx(boardIdx);
+            List<String> imageList = requestBody.getBoardImageList();
+            if(!CollectionUtils.isEmpty(imageList)){
+                List<ImageEntity> imageEntities = imageList.stream()
+                        .map(image -> new ImageEntity(boardIdx, image))
+                        .collect(Collectors.toList());
+                imageRepository.saveAll(imageEntities);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
         return ResponseDto.success();
     }
 }
