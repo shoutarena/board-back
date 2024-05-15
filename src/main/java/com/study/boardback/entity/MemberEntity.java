@@ -6,13 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
@@ -59,6 +53,14 @@ public class MemberEntity extends BaseDateTimeEntity {
         this.address = dto.getAddress();
         this.addressDetail = dto.getAddressDetail();
         this.agreedPersonal = dto.getAgreedPersonal();
+    }
+
+    public void setNickname(String nickname){
+        this.nickname = nickname;
+    }
+
+    public void setProfileImage(String profileImage){
+        this.profileImage = profileImage;
     }
 
 }

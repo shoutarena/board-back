@@ -40,4 +40,5 @@ public class ResponseDto {
     public static ResponseEntity<ResponseDto> noPermission(){
         return ResponseDto.getResponseEntityByResponseCode(ResponseCode.NO_PERMISSION);
     }
+
 }
