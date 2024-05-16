@@ -54,3 +54,5 @@ springdoc:
     doc-expansion: true # swagger tag 리스트 펼치기
   paths-to-match: /** # swagger-ui에 표시할 api의 엔드포인트 패턴
 
+cors:
+  list: http://localhost:3000
