@@ -2,7 +2,7 @@ package com.study.boardback.dto.response.member;
 
 import com.study.boardback.common.ResponseCode;
 import com.study.boardback.dto.response.ResponseDto;
-import com.study.boardback.entity.MemberEntity;
+import com.study.boardback.entity.Member;
 import lombok.Getter;
 import org.springframework.http.ResponseEntity;
 
@@ -13,15 +13,15 @@ public class GetUserResponseDto extends ResponseDto {
     private String nickname;
     private String profileImage;
 
-    private GetUserResponseDto(MemberEntity memberEntity){
+    private GetUserResponseDto(Member member){
         super(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessage());
-        this.email = memberEntity.getEmail();
-        this.nickname = memberEntity.getNickname();
-        this.profileImage = memberEntity.getProfileImage();
+        this.email = member.getEmail();
+        this.nickname = member.getNickname();
+        this.profileImage = member.getProfileImage();
     }
 
-    public static ResponseEntity<GetUserResponseDto> success(MemberEntity memberEntity){
-        return ResponseEntity.status(ResponseCode.SUCCESS.getHttpStatus()).body(new GetUserResponseDto(memberEntity));
+    public static ResponseEntity<GetUserResponseDto> success(Member member){
+        return ResponseEntity.status(ResponseCode.SUCCESS.getHttpStatus()).body(new GetUserResponseDto(member));
     }
 
 }

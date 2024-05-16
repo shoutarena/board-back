@@ -1,6 +1,6 @@
 package com.study.boardback.repository;
 
-import com.study.boardback.entity.SearchLogEntity;
+import com.study.boardback.entity.SearchLog;
 import com.study.boardback.repository.resultSet.GetPopularListResultSet;
 import com.study.boardback.repository.resultSet.GetRelationListResultSet;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SearchLogRepository extends JpaRepository<SearchLogEntity, Integer> {
+public interface SearchLogRepository extends JpaRepository<SearchLog, Integer> {
 
     @Query(
             value = "" +

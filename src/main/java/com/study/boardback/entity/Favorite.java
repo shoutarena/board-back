@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.Objects;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,7 +14,7 @@ import java.util.Objects;
 @Entity(name = "favorite")
 @IdClass(FavoriteEntityPK.class)
 @EntityListeners(AuditingEntityListener.class)
-public class FavoriteEntity {
+public class Favorite {
 
     @Id
     @Column(name = "reg_idx", nullable = false)

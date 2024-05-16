@@ -37,17 +37,17 @@ public class BoardServiceImpl implements BoardService {
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto postBoardRequestDto, String email) {
 
         try {
-            MemberEntity memberEntity = memberRepository.findByEmail(email);
-            if(ObjectUtils.isEmpty(memberEntity)) return ResponseDto.noExistMember();
+            Member member = memberRepository.findByEmail(email);
+            if(ObjectUtils.isEmpty(member)) return ResponseDto.noExistMember();
 
-            BoardEntity boardEntity = new BoardEntity(postBoardRequestDto, memberEntity);
-            boardRepository.save(boardEntity);
+            Board board = new Board(postBoardRequestDto, member);
+            boardRepository.save(board);
 
-            int boardIdx = boardEntity.getBoardIdx();
+            int boardIdx = board.getBoardIdx();
             List<String> boardImageList = postBoardRequestDto.getBoardImageList();
             if(!CollectionUtils.isEmpty(boardImageList)){
-                List<ImageEntity> imageEntities = boardImageList.stream()
-                        .map(img -> new ImageEntity(boardIdx, img))
+                List<Image> imageEntities = boardImageList.stream()
+                        .map(img -> new Image(boardIdx, img))
                         .toList();
 
                 imageRepository.saveAll(imageEntities);
@@ -65,7 +65,7 @@ public class BoardServiceImpl implements BoardService {
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardIdx) {
 
         GetBoardResultSet resultSet = null;
-        List<ImageEntity> imageEntities = new ArrayList<>();
+        List<Image> imageEntities = new ArrayList<>();
         try {
 
             resultSet = boardRepository.getBoard(boardIdx);
@@ -84,22 +84,22 @@ public class BoardServiceImpl implements BoardService {
 
         try {
 
-            MemberEntity memberEntity = memberRepository.findByEmail(email);
-            if(ObjectUtils.isEmpty(memberEntity)) return PutFavoriteResponseDto.noExistMember();
+            Member member = memberRepository.findByEmail(email);
+            if(ObjectUtils.isEmpty(member)) return PutFavoriteResponseDto.noExistMember();
 
-            BoardEntity boardEntity = boardRepository.findByBoardIdx(boardIdx);
-            if(ObjectUtils.isEmpty(boardEntity)) return PutFavoriteResponseDto.noExistBoard();
+            Board board = boardRepository.findByBoardIdx(boardIdx);
+            if(ObjectUtils.isEmpty(board)) return PutFavoriteResponseDto.noExistBoard();
 
-            FavoriteEntity favoriteEntity = favoriteRepository.findByBoardIdxAndRegIdx(boardIdx, memberEntity.getMemberIdx());
-            if(ObjectUtils.isEmpty(favoriteEntity)){
-                favoriteEntity = new FavoriteEntity(memberEntity.getMemberIdx(), boardIdx);
-                favoriteRepository.save(favoriteEntity);
-                boardEntity.increaseFavoriteCount();
+            Favorite favorite = favoriteRepository.findByBoardIdxAndRegIdx(boardIdx, member.getMemberIdx());
+            if(ObjectUtils.isEmpty(favorite)){
+                favorite = new Favorite(member.getMemberIdx(), boardIdx);
+                favoriteRepository.save(favorite);
+                board.increaseFavoriteCount();
             }else {
-                favoriteRepository.delete(favoriteEntity);
-                boardEntity.decreaseFavoriteCount();
+                favoriteRepository.delete(favorite);
+                board.decreaseFavoriteCount();
             }
-            boardRepository.save(boardEntity);
+            boardRepository.save(board);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,16 +133,16 @@ public class BoardServiceImpl implements BoardService {
     public ResponseEntity<? super PostCommentResponseDto> postComment(Integer boardIdx, PostCommentRequestDto requestBody, String email) {
 
         try {
-            BoardEntity boardEntity = boardRepository.findByBoardIdx(boardIdx);
-            if(ObjectUtils.isEmpty(boardEntity)) return ResponseDto.noExistBoard();
-            MemberEntity memberEntity = memberRepository.findByEmail(email);
-            if(ObjectUtils.isEmpty(memberEntity)) return ResponseDto.noExistMember();
+            Board board = boardRepository.findByBoardIdx(boardIdx);
+            if(ObjectUtils.isEmpty(board)) return ResponseDto.noExistBoard();
+            Member member = memberRepository.findByEmail(email);
+            if(ObjectUtils.isEmpty(member)) return ResponseDto.noExistMember();
 
-            CommentEntity commentEntity = new CommentEntity(boardIdx, requestBody, memberEntity.getMemberIdx());
-            commentRepository.save(commentEntity);
+            Comment comment = new Comment(boardIdx, requestBody, member.getMemberIdx());
+            commentRepository.save(comment);
 
-            boardEntity.increaseCommentCount();
-            boardRepository.save(boardEntity);
+            board.increaseCommentCount();
+            boardRepository.save(board);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -173,10 +173,10 @@ public class BoardServiceImpl implements BoardService {
     public ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(Integer boardIdx) {
 
         try {
-            BoardEntity boardEntity = boardRepository.findByBoardIdx(boardIdx);
-            if(ObjectUtils.isEmpty(boardEntity)) return ResponseDto.noExistBoard();
-            boardEntity.increaseViewCount();
-            boardRepository.save(boardEntity);
+            Board board = boardRepository.findByBoardIdx(boardIdx);
+            if(ObjectUtils.isEmpty(board)) return ResponseDto.noExistBoard();
+            board.increaseViewCount();
+            boardRepository.save(board);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
@@ -188,17 +188,17 @@ public class BoardServiceImpl implements BoardService {
     public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardIdx, String email) {
 
         try {
-            MemberEntity memberEntity = memberRepository.findByEmail(email);
-            if(ObjectUtils.isEmpty(memberEntity)) return ResponseDto.noExistMember();
-            BoardEntity boardEntity = boardRepository.findByBoardIdx(boardIdx);
-            if(ObjectUtils.isEmpty(boardEntity)) return ResponseDto.noExistBoard();
-            boolean isWriter = boardEntity.getRegIdx() == memberEntity.getMemberIdx();
+            Member member = memberRepository.findByEmail(email);
+            if(ObjectUtils.isEmpty(member)) return ResponseDto.noExistMember();
+            Board board = boardRepository.findByBoardIdx(boardIdx);
+            if(ObjectUtils.isEmpty(board)) return ResponseDto.noExistBoard();
+            boolean isWriter = board.getRegIdx() == member.getMemberIdx();
             if(!isWriter) return ResponseDto.noPermission();
 
             imageRepository.deleteByBoardIdx(boardIdx);
             commentRepository.deleteByBoardIdx(boardIdx);
             favoriteRepository.deleteByBoardIdx(boardIdx);
-            boardRepository.delete(boardEntity);
+            boardRepository.delete(board);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -212,20 +212,20 @@ public class BoardServiceImpl implements BoardService {
     public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PostBoardRequestDto requestBody, Integer boardIdx, String email) {
 
         try {
-            MemberEntity memberEntity = memberRepository.findByEmail(email);
-            if(ObjectUtils.isEmpty(memberEntity)) return ResponseDto.noExistMember();
-            BoardEntity boardEntity = boardRepository.findByBoardIdx(boardIdx);
-            if(ObjectUtils.isEmpty(boardEntity)) return ResponseDto.noExistBoard();
-            boolean isWriter = boardEntity.getRegIdx() == memberEntity.getMemberIdx();
+            Member member = memberRepository.findByEmail(email);
+            if(ObjectUtils.isEmpty(member)) return ResponseDto.noExistMember();
+            Board board = boardRepository.findByBoardIdx(boardIdx);
+            if(ObjectUtils.isEmpty(board)) return ResponseDto.noExistBoard();
+            boolean isWriter = board.getRegIdx() == member.getMemberIdx();
             if(!isWriter) return ResponseDto.noPermission();
-            boardEntity.patchBoard(requestBody);
-            boardRepository.save(boardEntity);
+            board.patchBoard(requestBody);
+            boardRepository.save(board);
 
             imageRepository.deleteByBoardIdx(boardIdx);
             List<String> imageList = requestBody.getBoardImageList();
             if(!CollectionUtils.isEmpty(imageList)){
-                List<ImageEntity> imageEntities = imageList.stream()
-                        .map(image -> new ImageEntity(boardIdx, image))
+                List<Image> imageEntities = imageList.stream()
+                        .map(image -> new Image(boardIdx, image))
                         .collect(Collectors.toList());
                 imageRepository.saveAll(imageEntities);
             }
@@ -240,7 +240,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList() {
 
-        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+        List<BoardListView> boardListViewEntities = new ArrayList<>();
 
         try {
             boardListViewEntities = boardListViewRepository.findByOrderByRegDtDesc();
@@ -254,7 +254,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList() {
 
-        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+        List<BoardListView> boardListViewEntities = new ArrayList<>();
         try {
             LocalDateTime ldt = LocalDateTime.now().minusDays(7);
             boardListViewEntities = boardListViewRepository.findTop3ByRegDtGreaterThanOrderByFavoriteCountDescCommentCountDescViewCountDescRegDtDesc(ldt);
@@ -268,16 +268,16 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord, String preSearchWord) {
 
-        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+        List<BoardListView> boardListViewEntities = new ArrayList<>();
 
         try {
             boardListViewEntities = boardListViewRepository.findByTitleContainsOrContentContainsOrderByRegDtDesc(searchWord, searchWord);
-            SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, preSearchWord, false);
-            searchLogRepository.save(searchLogEntity);
+            SearchLog searchLog = new SearchLog(searchWord, preSearchWord, false);
+            searchLogRepository.save(searchLog);
             boolean relation = preSearchWord != null;
             if(relation) {
-                searchLogEntity = new SearchLogEntity(preSearchWord, searchWord, relation);
-                searchLogRepository.save(searchLogEntity);
+                searchLog = new SearchLog(preSearchWord, searchWord, relation);
+                searchLogRepository.save(searchLog);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -288,7 +288,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public ResponseEntity<? super GetMemberBoardListResponseDto> getUserBoardList(String email) {
-        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+        List<BoardListView> boardListViewEntities = new ArrayList<>();
         try {
             boardListViewEntities = boardListViewRepository.findByEmailOrderByRegDtDesc(email);
         } catch (Exception e) {

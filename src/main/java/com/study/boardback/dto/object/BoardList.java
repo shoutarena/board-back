@@ -1,7 +1,7 @@
 package com.study.boardback.dto.object;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.study.boardback.entity.BoardListViewEntity;
+import com.study.boardback.entity.BoardListView;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,21 +28,21 @@ public class BoardList {
     private String profileImage;
     private String email;
 
-    public BoardList(BoardListViewEntity boardListViewEntity) {
-        this.boardIdx = boardListViewEntity.getBoardIdx();
-        this.title = boardListViewEntity.getTitle();
-        this.content = boardListViewEntity.getContent();
-        this.boardTitleImage = boardListViewEntity.getImage();
-        this.favoriteCount = boardListViewEntity.getFavoriteCount();
-        this.commentCount = boardListViewEntity.getCommentCount();
-        this.viewCount = boardListViewEntity.getViewCount();
-        this.regDt = boardListViewEntity.getRegDt();
-        this.nickname = boardListViewEntity.getNickname();
-        this.profileImage = boardListViewEntity.getProfileImage();
-        this.email = boardListViewEntity.getEmail();
+    public BoardList(BoardListView boardListView) {
+        this.boardIdx = boardListView.getBoardIdx();
+        this.title = boardListView.getTitle();
+        this.content = boardListView.getContent();
+        this.boardTitleImage = boardListView.getImage();
+        this.favoriteCount = boardListView.getFavoriteCount();
+        this.commentCount = boardListView.getCommentCount();
+        this.viewCount = boardListView.getViewCount();
+        this.regDt = boardListView.getRegDt();
+        this.nickname = boardListView.getNickname();
+        this.profileImage = boardListView.getProfileImage();
+        this.email = boardListView.getEmail();
     }
 
-    public static List<BoardList> getList(List<BoardListViewEntity> boardListViewEntities){
+    public static List<BoardList> getList(List<BoardListView> boardListViewEntities){
         return boardListViewEntities.stream().map(BoardList::new).collect(Collectors.toList());
     }
 

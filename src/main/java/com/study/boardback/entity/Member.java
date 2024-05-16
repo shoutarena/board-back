@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "member")
 @Entity(name = "member")
 @EntityListeners(AuditingEntityListener.class)
-public class MemberEntity extends BaseDateTimeEntity {
+public class Member extends BaseDateTimeEntity {
 
     @Id
     @Column(name = "member_idx", nullable = false)
@@ -45,7 +45,7 @@ public class MemberEntity extends BaseDateTimeEntity {
     @Column(name = "agreed_personal", nullable = false)
     private boolean agreedPersonal;
 
-    public MemberEntity(SignUpRequestDto dto) {
+    public Member(SignUpRequestDto dto) {
         this.email = dto.getEmail();
         this.password = dto.getPassword();
         this.nickname = dto.getNickname();

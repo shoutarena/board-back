@@ -1,6 +1,6 @@
 package com.study.boardback.repository;
 
-import com.study.boardback.entity.FavoriteEntity;
+import com.study.boardback.entity.Favorite;
 import com.study.boardback.entity.primaryKey.FavoriteEntityPK;
 import com.study.boardback.repository.resultSet.GetFavoriteListResultSet;
 import jakarta.transaction.Transactional;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface FavoriteRepository extends JpaRepository<FavoriteEntity, FavoriteEntityPK> {
+public interface FavoriteRepository extends JpaRepository<Favorite, FavoriteEntityPK> {
 
-    FavoriteEntity findByBoardIdxAndRegIdx(Integer boardIdx, Integer regIdx);
+    Favorite findByBoardIdxAndRegIdx(Integer boardIdx, Integer regIdx);
 
     @Query(value =
             "SELECT " +

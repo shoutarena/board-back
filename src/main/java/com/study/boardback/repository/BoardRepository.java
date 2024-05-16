@@ -1,13 +1,13 @@
 package com.study.boardback.repository;
 
-import com.study.boardback.entity.BoardEntity;
+import com.study.boardback.entity.Board;
 import com.study.boardback.repository.resultSet.GetBoardResultSet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
+public interface BoardRepository extends JpaRepository<Board, Integer> {
 
     @Query(
             value = "SELECT " +
@@ -25,7 +25,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
     )
     GetBoardResultSet getBoard(Integer boardIdx);
 
-    BoardEntity findByBoardIdx(Integer boardIdx);
+    Board findByBoardIdx(Integer boardIdx);
 
     boolean existsByBoardIdx(Integer email);
 }

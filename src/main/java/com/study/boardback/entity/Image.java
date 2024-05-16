@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "image")
 @Entity(name = "image")
 @EntityListeners(AuditingEntityListener.class)
-public class ImageEntity {
+public class Image {
 
     @Id
     @Column(name = "image_idx", nullable = false)
@@ -25,7 +25,7 @@ public class ImageEntity {
     @Column(name = "image", nullable = false)
     private String image;
 
-    public ImageEntity(int boardIdx, String image){
+    public Image(int boardIdx, String image){
         this.boardIdx = boardIdx;
         this.image = image;
     }

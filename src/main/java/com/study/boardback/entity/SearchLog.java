@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "search_log")
 @Entity(name = "search_log")
 @EntityListeners(AuditingEntityListener.class)
-public class SearchLogEntity {
+public class SearchLog {
 
     @Id
     @Column(name = "search_idx", nullable = false)
@@ -28,7 +28,7 @@ public class SearchLogEntity {
     @Column(name = "relation", nullable = false)
     private boolean relation;
 
-    public SearchLogEntity(String searchWord, String relationWord, boolean relation){
+    public SearchLog(String searchWord, String relationWord, boolean relation){
         this.searchWord = searchWord;
         this.relationWord = relationWord;
         this.relation = relation;

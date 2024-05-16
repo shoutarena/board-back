@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Table(name = "comment")
 @Entity(name = "comment")
 @EntityListeners(AuditingEntityListener.class)
-public class CommentEntity {
+public class Comment {
     @Id
     @Column(name = "comment_idx", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,7 @@ public class CommentEntity {
     @Column(name = "reg_dt", nullable = false)
     private LocalDateTime regDt;
 
-    public CommentEntity(int boardIdx, PostCommentRequestDto requestDto, Integer memberIdx){
+    public Comment(int boardIdx, PostCommentRequestDto requestDto, Integer memberIdx){
         this.boardIdx = boardIdx;
         this.content = requestDto.getContent();
         this.regIdx = memberIdx;

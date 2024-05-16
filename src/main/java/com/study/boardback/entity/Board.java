@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "board")
 @Entity(name = "board")
-public class BoardEntity extends BaseDateTimeEntity {
+public class Board extends BaseDateTimeEntity {
     @Id
     @Column(name = "board_idx", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,13 +36,13 @@ public class BoardEntity extends BaseDateTimeEntity {
     @Column(name = "reg_idx", nullable = false)
     private int regIdx;
 
-    public BoardEntity(PostBoardRequestDto postBoardRequestDto, MemberEntity memberEntity){
+    public Board(PostBoardRequestDto postBoardRequestDto, Member member){
         this.title = postBoardRequestDto.getTitle();
         this.content = postBoardRequestDto.getContent();
         this.favoriteCount = 0;
         this.viewCount = 0;
         this.commentCount = 0;
-        this.regIdx = memberEntity.getMemberIdx();
+        this.regIdx = member.getMemberIdx();
     }
 
     public void increaseViewCount() {

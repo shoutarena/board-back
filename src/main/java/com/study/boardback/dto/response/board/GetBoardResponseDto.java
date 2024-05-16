@@ -3,7 +3,7 @@ package com.study.boardback.dto.response.board;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.study.boardback.common.ResponseCode;
 import com.study.boardback.dto.response.ResponseDto;
-import com.study.boardback.entity.ImageEntity;
+import com.study.boardback.entity.Image;
 import com.study.boardback.repository.resultSet.GetBoardResultSet;
 import lombok.Getter;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ public class GetBoardResponseDto extends ResponseDto {
     private String writerNickname;
     private String writerProfileImage;
 
-    private GetBoardResponseDto(GetBoardResultSet resultSet, List<ImageEntity> imageEntities){
+    private GetBoardResponseDto(GetBoardResultSet resultSet, List<Image> imageEntities){
         super(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessage());
         this.boardIdx = resultSet.getBoardIdx();
         this.title = resultSet.getTitle();
@@ -35,11 +35,11 @@ public class GetBoardResponseDto extends ResponseDto {
         this.writerNickname = resultSet.getWriterNickname();
         this.writerProfileImage = resultSet.getWriterProfileImage();
         this.boardImageList = imageEntities.stream()
-                .map(ImageEntity::getImage)
+                .map(Image::getImage)
                 .collect(Collectors.toList());
     }
 
-    public static ResponseEntity<GetBoardResponseDto> success(GetBoardResultSet resultSet, List<ImageEntity> imageEntities){
+    public static ResponseEntity<GetBoardResponseDto> success(GetBoardResultSet resultSet, List<Image> imageEntities){
         GetBoardResponseDto result = new GetBoardResponseDto(resultSet, imageEntities);
         return ResponseEntity.status(ResponseCode.SUCCESS.getHttpStatus()).body(result);
     }

@@ -1,12 +1,12 @@
 package com.study.boardback.service.implement;
 
+import com.study.boardback.entity.Member;
 import com.study.boardback.provider.JwtProvider;
 import com.study.boardback.dto.request.auth.SignInRequestDto;
 import com.study.boardback.dto.request.auth.SignUpRequestDto;
 import com.study.boardback.dto.response.ResponseDto;
 import com.study.boardback.dto.response.auth.SignInResponseDto;
 import com.study.boardback.dto.response.auth.SignUpResponseDto;
-import com.study.boardback.entity.MemberEntity;
 import com.study.boardback.repository.MemberRepository;
 import com.study.boardback.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -52,10 +52,10 @@ public class AuthServiceImpl implements AuthService {
             dto.setPassword(encodedPassword);
 
             // * 객체 복사
-            MemberEntity memberEntity = new MemberEntity(dto);
+            Member member = new Member(dto);
 
             // * 저장
-            memberRepository.save(memberEntity);
+            memberRepository.save(member);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,16 +74,16 @@ public class AuthServiceImpl implements AuthService {
         try {
 
             String email = dto.getEmail();
-            MemberEntity memberEntity = memberRepository.findByEmail(email);
+            Member member = memberRepository.findByEmail(email);
 
             // * 계정 존재 validation
-            if(ObjectUtils.isEmpty(memberEntity)){
+            if(ObjectUtils.isEmpty(member)){
                 return SignInResponseDto.signInFail();
             }
 
             // * 비밀번호 체크
             String password = dto.getPassword();
-            String encodedPassword = memberEntity.getPassword();
+            String encodedPassword = member.getPassword();
             boolean isMatched = passwordEncoder.matches(password, encodedPassword);
             if(!isMatched){
                 return SignInResponseDto.signInFail();
