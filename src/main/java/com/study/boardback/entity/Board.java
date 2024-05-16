@@ -1,7 +1,7 @@
 package com.study.boardback.entity;
 
 import com.study.boardback.dto.request.board.PostBoardRequestDto;
-import com.study.boardback.entity.baseEntity.BaseDateTimeEntity;
+import com.study.boardback.entity.baseEntity.BaseDateTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "board")
 @Entity(name = "board")
-public class Board extends BaseDateTimeEntity {
+public class Board extends BaseDateTime {
     @Id
     @Column(name = "board_idx", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

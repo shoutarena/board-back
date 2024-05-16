@@ -1,7 +1,7 @@
 package com.study.boardback.entity;
 
 import com.study.boardback.dto.request.auth.SignUpRequestDto;
-import com.study.boardback.entity.baseEntity.BaseDateTimeEntity;
+import com.study.boardback.entity.baseEntity.BaseDateTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "member")
 @Entity(name = "member")
 @EntityListeners(AuditingEntityListener.class)
-public class Member extends BaseDateTimeEntity {
+public class Member extends BaseDateTime {
 
     @Id
     @Column(name = "member_idx", nullable = false)
