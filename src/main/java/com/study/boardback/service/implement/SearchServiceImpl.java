@@ -8,12 +8,14 @@ import com.study.boardback.repository.resultSet.GetPopularListResultSet;
 import com.study.boardback.repository.resultSet.GetRelationListResultSet;
 import com.study.boardback.service.SearchService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService {
